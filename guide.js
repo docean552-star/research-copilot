@@ -103,16 +103,18 @@ function downloadTemplates() {
   t.push('');
   t.push('1. Ask user for project name (suggest English, short, no spaces — e.g. "ai-education-paper")');
   t.push('2. Generate and run ONE shell script that does EVERYTHING in a single execution:');
-  t.push('   - Creates all directories (root, shared, project, subdirs)');
-  t.push('   - Writes ALL template files using heredocs (CLAUDE.md, phases/phase-0.md through phase-9.md, tasker.yaml, empty files)');
-  t.push('   - Extract file contents from the sections below (claude-md.md, phase-protocols.md split by "---", tasker-templates.yaml phase 0 block)');
+  t.push('   - Creates all directories');
+  t.push('   - Writes ALL files using heredocs (CLAUDE.md, phases.yaml, empty files)');
+  t.push('   - Extract file contents from the sections below (claude-md.md -> CLAUDE.md, phases.yaml -> phases.yaml)');
   t.push('');
   t.push('   Directory structure:');
-  t.push('   ~/research-papers/                  (root, ASCII-only path)');
-  t.push('   ~/research-papers/memory/           (shared across projects)');
-  t.push('   ~/research-papers/templates/        (shared across projects)');
-  t.push('   ~/research-papers/{project-name}/   (this project)');
-  t.push('     phases/, papers-pdf/, draft/, search-log.txt, outline.txt');
+  t.push('   ~/Desktop/{project-name}/          (project on Desktop, ASCII-only name)');
+  t.push('     phases.yaml                      (protocols + task tracking)');
+  t.push('     CLAUDE.md                        (agent instructions)');
+  t.push('     search-log.txt                   (empty)');
+  t.push('     outline.txt                      (empty)');
+  t.push('     papers-pdf/                      (empty dir)');
+  t.push('     draft/                           (empty dir)');
   t.push('');
   t.push('   CRITICAL: Do NOT create files one by one with separate tool calls.');
   t.push('   Do NOT use multiple write/create commands. ONE script, ONE run.');
@@ -124,10 +126,8 @@ function downloadTemplates() {
   t.push('IMPORTANT: Do NOT start Phase 0 yourself. Do NOT ask the user about their topic.');
   t.push('The user must go back to the HTML guide and copy the Phase 0 prompt from there.');
   t.push('');
-  t.push('If ~/research-papers/ already exists (returning user):');
-  t.push('- Skip creating root, memory/, templates/');
-  t.push('- Only create new project directory');
-  t.push('- Copy templates from ~/research-papers/templates/ if customized versions exist, otherwise from this file');
+  t.push('If a project directory already exists on Desktop (returning user):');
+  t.push('- Only create new project directory, don\'t overwrite existing ones');
   t.push('');
   t.push('========== SECTION: claude-md.md ==========');
   t.push('# Research Paper Project');
@@ -137,25 +137,24 @@ function downloadTemplates() {
   t.push('');
   t.push('## Rules');
   t.push('- Work ONLY on the current phase. Do not skip ahead.');
-  t.push('- Each task has done_when. Do not mark done without verifying the criterion.');
+  t.push('- Each task in phases.yaml has done_when. Do not mark done without verifying the criterion.');
   t.push('- P1 tasks block P2. P2 tasks block P3. Complete in order.');
   t.push('- NEVER invent sources, citations, DOIs, or author names.');
   t.push('- If user asks to "add more references" — refuse and explain you will hallucinate them. Suggest NotebookLM or Scholar instead.');
-  t.push('- When context is getting full, save state to tasker.yaml and suggest starting a new session.');
+  t.push('- When context is getting full, save state to phases.yaml and suggest starting a new session.');
   t.push('- All project files use ASCII-only paths.');
   t.push('- Keep responses SHORT. One task at a time. No walls of text. If user needs details, they will ask.');
   t.push('- After completing setup or a phase gate, tell user to go back to the HTML guide for the next prompt. Do NOT improvise the next phase yourself.');
   t.push('');
-  t.push('## Phase protocols');
-  t.push('Read phases/phase-{current_phase}.md for detailed instructions for the current phase.');
-  t.push('');
-  t.push('## Gate protocol');
-  t.push('At the end of each phase, read the GATE section in the phase protocol.');
-  t.push('Show the checklist to the user. ALL items must be confirmed.');
-  t.push('Only then update "Current phase" above and proceed.');
+  t.push('## How to use phases.yaml');
+  t.push('- Read the current phase section (filter by phase number from "Current phase" above)');
+  t.push('- Follow tasks in priority order (P1 first, then P2, then P3)');
+  t.push('- Update task status in phases.yaml as you go (pending -> done)');
+  t.push('- At phase end, check all gate items. Show checklist to user.');
+  t.push('- Only update "Current phase" above after ALL gate items confirmed.');
   t.push('');
   t.push('## Project files');
-  t.push('- tasker.yaml — current tasks and progress');
+  t.push('- phases.yaml — phase protocols + task tracking (single source of truth)');
   t.push('- search-log.txt — search strategy and query log');
   t.push('- outline.txt — paper structure');
   t.push('- argument-map.txt — thesis: supporting, contradicting, unknown');
@@ -164,66 +163,12 @@ function downloadTemplates() {
   t.push('- quality-metrics.txt — coverage and reliability metrics');
   t.push('- papers-pdf/ — collected PDFs (for NotebookLM)');
   t.push('- draft/ — paper sections');
-  t.push('');
-  t.push('## Shared (across projects)');
-  t.push('- ../memory/ — persistent experience, preferences, lessons learned');
-  t.push('- ../templates/ — reusable document templates');
 
   t.push('');
-  t.push('========== SECTION: phase-protocols.md ==========');
-  var phases = document.getElementById('tmpl-phases');
-  if (phases) { t.push(phases.textContent); }
-  else { t.push('[Phase protocols — see phase-protocols.md]'); }
-
-  t.push('');
-  t.push('========== SECTION: tasker-templates.yaml ==========');
-  var taskers = document.getElementById('tmpl-taskers');
-  if (taskers) { t.push(taskers.textContent); }
-  else { t.push('[Tasker templates — see tasker-templates.yaml]'); }
-
-  t.push('');
-  t.push('========== SECTION: memory.md ==========');
-  t.push('# Research Memory');
-  t.push('');
-  t.push('## Preferences');
-  t.push('- Writing style: [will be filled after first project]');
-  t.push('- Preferred citation format: [APA 7th / Harvard / Chicago / IEEE]');
-  t.push('- Language: [English / Russian / other]');
-  t.push('- Target journals: []');
-  t.push('');
-  t.push('## Learned patterns');
-  t.push('- [Patterns discovered during projects go here]');
-  t.push('');
-  t.push('## Common pitfalls');
-  t.push('- [Mistakes to avoid, discovered through experience]');
-  t.push('');
-  t.push('## Search strategies that worked');
-  t.push('- [Effective query patterns by field]');
-  t.push('');
-  t.push('## Projects completed');
-  t.push('- [Project name, topic, date, outcome]');
-  t.push('');
-  t.push('========== SECTION: source-card.yaml ==========');
-  t.push('# Source card template (YAML format, introduced in Phase 4)');
-  t.push('# Copy this structure for each key source');
-  t.push('');
-  t.push('- doi: ""');
-  t.push('  title: ""');
-  t.push('  authors: []');
-  t.push('  year: 0');
-  t.push('  journal: ""');
-  t.push('  type: ""           # primary | secondary | review | meta-analysis');
-  t.push('  relevance: ""      # core | supporting | background | contradicting');
-  t.push('  has_full_text: false');
-  t.push('  key_findings:');
-  t.push('    - ""');
-  t.push('  methodology: ""');
-  t.push('  limitations: ""');
-  t.push('  connection_to_thesis: ""');
-  t.push('  quality_assessment: ""  # high | medium | low');
-  t.push('  notebooklm_verified: false');
-  t.push('  scite_support: 0');
-  t.push('  scite_contrast: 0');
+  t.push('========== SECTION: phases.yaml ==========');
+  var phasesEl = document.getElementById('tmpl-phases');
+  if (phasesEl) { t.push(phasesEl.textContent); }
+  else { t.push('[phases.yaml — see phases.yaml]'); }
 
   var blob = new Blob([t.join('\n')], {type: 'text/markdown'});
   var a = document.createElement('a');

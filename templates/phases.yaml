@@ -1,0 +1,342 @@
+# Unified phase protocols + task tracking
+# Agent reads current phase section, updates status fields in place
+
+- phase: 0
+  title: "Research Question Formulation"
+  status: in_progress
+  context: "Help user go from vague topic to concrete, falsifiable research question."
+  tasks:
+    - title: "Describe topic in own words"
+      priority: P1
+      done_when: "user has described their topic freely"
+      status: pending
+    - title: "Generate 3-5 research question variants"
+      priority: P1
+      done_when: "variants range from broad to narrow, all checked against 4 criteria"
+      status: pending
+    - title: "Validate chosen question against 4 criteria"
+      priority: P1
+      done_when: "specificity, researchability, falsifiability, novelty — all checked"
+      status: pending
+    - title: "Generate 15+ English search queries"
+      priority: P2
+      done_when: "queries written to search-log.txt"
+      status: pending
+    - title: "Generate terms for Semantic Scholar, synonyms, related concepts"
+      priority: P2
+      done_when: "added to search-log.txt"
+      status: pending
+    - title: "Define inclusion/exclusion criteria"
+      priority: P2
+      done_when: "criteria recorded in search-log.txt (language, years, types)"
+      status: pending
+  constraints:
+    - "Do NOT search for literature (phases 1-2)"
+    - "Do NOT name specific authors or papers (you WILL hallucinate them)"
+    - "Do NOT claim the question is 'definitely new' — you don't know"
+    - "Do NOT skip to writing — this phase is about the QUESTION only"
+    - "Do NOT dump all tasks at once. Start with task 1, wait for answer, then proceed one at a time."
+  gate:
+    - "Research question recorded in search-log.txt"
+    - "Question passed all 4 criteria"
+    - "15+ search terms generated"
+    - "Inclusion/exclusion criteria defined"
+    - "User confirmed question is what they want to research"
+
+- phase: 1
+  title: "Reconnaissance (Google Deep Research)"
+  status: pending
+  context: "User runs Google Deep Research in browser. Agent helps AFTER, not during."
+  tasks:
+    - title: "Guide user to run Deep Research with proper prompt"
+      priority: P1
+      done_when: "user has received and shared Deep Research report"
+      status: pending
+    - title: "Help interpret Deep Research results"
+      priority: P1
+      done_when: "key authors, theories, meta-analyses identified"
+      status: pending
+    - title: "Extract new search terms from report"
+      priority: P2
+      done_when: "new terms added to search-log.txt"
+      status: pending
+    - title: "Identify target journals"
+      priority: P2
+      done_when: "journal list added to search-log.txt"
+      status: pending
+  constraints:
+    - "Do NOT search for literature yourself"
+    - "Do NOT add 'your own' sources — you have none"
+    - "Do NOT confirm Deep Research findings as correct — they may contain errors"
+  gate:
+    - "Deep Research report processed"
+    - "Key authors listed in search-log.txt"
+    - "Key theories/frameworks identified"
+    - "Meta-analyses and systematic reviews noted (if any)"
+    - "Search terms expanded with new terminology"
+
+- phase: 2
+  title: "Deep Literature Search"
+  status: pending
+  context: "User searches in browser (Scholar, Connected Papers, Semantic Scholar). Agent assists."
+  tasks:
+    - title: "Help refine search queries if results are irrelevant"
+      priority: P1
+      done_when: "user reports satisfactory search results"
+      status: pending
+    - title: "Help evaluate relevance from abstracts"
+      priority: P1
+      done_when: "user has clear include/exclude decisions"
+      status: pending
+    - title: "Suggest additional synonyms and terms"
+      priority: P2
+      done_when: "added to search-log.txt"
+      status: pending
+    - title: "Help document each search in search-log"
+      priority: P2
+      done_when: "each query logged with date, database, filters, counts"
+      status: pending
+    - title: "Help assess saturation"
+      priority: P3
+      done_when: "user confirms new searches yield mostly known results"
+      status: pending
+  constraints:
+    - "Do NOT name specific papers or DOIs — you will hallucinate them"
+    - "Do NOT say 'this paper is good' about a paper you haven't read"
+    - "Do NOT generate URLs — you don't know real ones"
+  gate:
+    - "30-80 sources saved in Zotero"
+    - "All searches documented in search-log.txt"
+    - "Saturation reached (new queries yield known results)"
+    - "Connected Papers explored for key works"
+
+- phase: 3
+  title: "Source Collection"
+  status: pending
+  context: "User works in Zotero and browser. Agent's role is minimal."
+  tasks:
+    - title: "Help organize Zotero collections and tags"
+      priority: P1
+      done_when: "collections created (Core, Supporting, Background, Contradicting, Methods)"
+      status: pending
+    - title: "Guide user on finding full texts (Unpaywall, arXiv, PMC, SSRN)"
+      priority: P1
+      done_when: "user has attempted all channels for missing PDFs"
+      status: pending
+    - title: "Help prepare PDFs for NotebookLM"
+      priority: P2
+      done_when: "papers-pdf/ folder populated with readable PDFs"
+      status: pending
+  constraints:
+    - "Do NOT generate links to PDFs (you don't know real URLs)"
+    - "Do NOT assess paper quality (you haven't read them)"
+  gate:
+    - "Zotero organized with collections and tags"
+    - "Full texts obtained for 40%+ of sources"
+    - "papers-pdf/ folder ready for NotebookLM"
+    - "Core sources identified (5-10 must-reads)"
+
+- phase: 4
+  title: "Knowledge Base (NotebookLM)"
+  status: pending
+  context: "User works in NotebookLM (browser). Agent helps structure results AFTER."
+  tasks:
+    - title: "Guide user through NotebookLM setup and initial questions"
+      priority: P1
+      done_when: "notebook created, PDFs uploaded, first questions asked"
+      status: pending
+    - title: "Help structure findings into source cards (YAML)"
+      priority: P1
+      done_when: "source-cards.yaml created with cards for key sources"
+      status: pending
+    - title: "Help identify contradictions between sources"
+      priority: P2
+      done_when: "contradictions documented"
+      status: pending
+    - title: "Help identify gaps in coverage"
+      priority: P2
+      done_when: "gaps documented"
+      status: pending
+    - title: "Suggest Audio Overview for big-picture understanding"
+      priority: P3
+      done_when: "user has listened or decided to skip"
+      status: pending
+  constraints:
+    - "Do NOT answer questions about paper contents — you haven't read them, NotebookLM has"
+    - "Do NOT supplement findings with 'your knowledge' — this is contamination"
+    - "Do NOT replace NotebookLM — direct user there for factual questions"
+  gate:
+    - "NotebookLM notebook populated with sources"
+    - "Source cards created for key papers"
+    - "Contradictions documented"
+    - "Gaps identified"
+    - "User has READ 5-10 core papers themselves (not just summaries)"
+
+- phase: 5
+  title: "Synthesis (Claude + NotebookLM)"
+  status: pending
+  context: "Agent's primary phase. Synthesize user's notes into structure."
+  tasks:
+    - title: "Group user's notes by themes"
+      priority: P1
+      done_when: "thematic grouping created and saved"
+      status: pending
+    - title: "Build argument map"
+      priority: P1
+      done_when: "argument-map.txt created with thesis, supporting, contradicting, unknown"
+      status: pending
+    - title: "Propose paper outline"
+      priority: P1
+      done_when: "outline.txt created with sections, arguments, sources per section"
+      status: pending
+    - title: "Cross-check key claims via NotebookLM"
+      priority: P2
+      done_when: "user verified argument map accuracy in NotebookLM"
+      status: pending
+  constraints:
+    - "Work ONLY with notes provided by user"
+    - "Do NOT add 'your own' sources or findings"
+    - "If data is insufficient — say so explicitly, don't fill gaps from imagination"
+    - "Every claim in argument map must reference a specific author from user's notes"
+  gate:
+    - "Thematic synthesis complete"
+    - "Argument map saved (argument-map.txt)"
+    - "Outline saved (outline.txt) with sources per section"
+    - "Key claims verified by user through NotebookLM"
+
+- phase: 6
+  title: "Writing (Claude)"
+  status: pending
+  context: "Write paper section by section based on outline and notes."
+  tasks:
+    - title: "Write section drafts using provided sources only"
+      priority: P1
+      done_when: "all drafts saved to draft/ directory"
+      status: pending
+    - title: "Ensure every claim has a citation"
+      priority: P2
+      done_when: "no unsupported claims remain"
+      status: pending
+    - title: "Apply hedging language throughout"
+      priority: P2
+      done_when: "no categorical statements without evidence"
+      status: pending
+  constraints:
+    - "Use ONLY sources from user's list. Not a single 'your own' source."
+    - "If a paragraph needs more sources — say 'need a source on [topic]', don't fabricate"
+    - "If user asks 'add more references' — REFUSE. Suggest NotebookLM/Scholar."
+    - "Never use 'clearly', 'obviously', 'proves' — not academic tone"
+    - "Write one section per session if context is limited"
+  gate:
+    - "All sections drafted (draft/ directory complete)"
+    - "Every claim has a citation"
+    - "Hedging language used throughout"
+    - "No invented sources"
+
+- phase: 7
+  title: "Critical Review (Claude as Reviewer 2)"
+  status: pending
+  context: "SEPARATE SESSION from the writer. Role: strict academic reviewer."
+  tasks:
+    - title: "Review each section for logical problems"
+      priority: P1
+      done_when: "all issues logged in review-log.txt"
+      status: pending
+    - title: "Check falsifiability of key claims"
+      priority: P1
+      done_when: "non-falsifiable claims flagged"
+      status: pending
+    - title: "Check for cherry-picking (missing counter-evidence)"
+      priority: P1
+      done_when: "all one-sided arguments flagged"
+      status: pending
+    - title: "Check academic tone and style"
+      priority: P2
+      done_when: "style issues noted"
+      status: pending
+    - title: "Check structure and transitions"
+      priority: P2
+      done_when: "structural issues noted"
+      status: pending
+  constraints:
+    - "This is a SEPARATE session. Do not defend the text — attack it."
+    - "Do not suggest adding sources the user doesn't have"
+    - "If a whole section is weak — say so directly"
+    - "Check: are ALL contradictions from literature addressed in text?"
+  gate:
+    - "All sections reviewed"
+    - "review-log.txt complete with all findings"
+    - "User has addressed each finding (fixed, acknowledged, or justified)"
+
+- phase: 8
+  title: "Verification (NotebookLM + scite.ai)"
+  status: pending
+  context: "Claim-by-claim verification through NotebookLM. Source quality via scite.ai."
+  tasks:
+    - title: "Extract all claims from text that reference sources"
+      priority: P1
+      done_when: "claims list created"
+      status: pending
+    - title: "Guide user through NotebookLM verification for each claim"
+      priority: P1
+      done_when: "verification-log.txt filled (CONFIRMED/NEEDS HEDGING/REMOVE)"
+      status: pending
+    - title: "Guide user through scite.ai for 10-15 key sources"
+      priority: P2
+      done_when: "source quality noted (supporting vs contrasting citations)"
+      status: pending
+    - title: "Calculate quality metrics"
+      priority: P2
+      done_when: "quality-metrics.txt filled"
+      status: pending
+  constraints:
+    - "Do NOT confirm claims yourself — NotebookLM does this"
+    - "Do NOT say 'this source is reliable' — you don't know. Let scite.ai show."
+    - "Do NOT suggest replacements for REMOVE claims — you'll hallucinate"
+  gate:
+    - "All claims verified (verification-log.txt complete)"
+    - "No REMOVE claims remain in text (fixed or removed)"
+    - "Key sources checked via scite.ai"
+    - "Quality metrics calculated, critical ones in green zone"
+
+- phase: 9
+  title: "Finalization"
+  status: pending
+  context: "Final polish: bibliography, style, plagiarism check, AI disclosure."
+  tasks:
+    - title: "Verify bibliography matches text"
+      priority: P1
+      done_when: "no orphan citations in either direction"
+      status: pending
+    - title: "Final style edit: all sections"
+      priority: P1
+      done_when: "colloquialisms removed, terms consistent, transitions smooth"
+      status: pending
+    - title: "Plagiarism and AI-detection check"
+      priority: P2
+      done_when: "user has checked or decided to check later"
+      status: pending
+    - title: "Write Abstract (LAST)"
+      priority: P2
+      done_when: "abstract accurately reflects actual content"
+      status: pending
+    - title: "Verify Conclusion has no new arguments"
+      priority: P3
+      done_when: "conclusion reviewed"
+      status: pending
+    - title: "Update memory for future projects"
+      priority: P3
+      done_when: "lessons learned saved to ../memory/"
+      status: pending
+  constraints:
+    - "Do NOT add content — only edit style"
+    - "Do NOT change claims or sources"
+    - "Do NOT skip the 'read aloud' recommendation"
+  gate:
+    - "Bibliography complete and consistent with text"
+    - "All sections style-edited"
+    - "Abstract written last and reflects actual content"
+    - "Plagiarism/AI-detection addressed"
+    - "AI disclosure written if required"
+    - "User has read text aloud"
+    - "Memory updated for future projects"
