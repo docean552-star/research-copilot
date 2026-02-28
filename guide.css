@@ -1,0 +1,58 @@
+:root { --bg: #1a1a2e; --surface: #16213e; --card: #0f3460; --accent: #e94560; --text: #eee; --muted: #999; --border: #333; --warn-bg: #2a1a1a; --tip-bg: #1a2a1a; --code-bg: #0d1b2a; --agent-bg: #1a1a3e; --agent-border: #6666aa; --agent-text: #aaa; --agent-summary: #8888cc; --h3-color: #ccc; --h1-color: #fff; --link: #53a8f1; }
+[data-theme="light"] { --bg: #f5f5f5; --surface: #fff; --card: #e8eaf0; --accent: #c0392b; --text: #222; --muted: #666; --border: #ddd; --warn-bg: #fff0f0; --tip-bg: #f0fff0; --code-bg: #f0f0f0; --agent-bg: #f0f0ff; --agent-border: #9999cc; --agent-text: #555; --agent-summary: #5555aa; --h3-color: #444; --h1-color: #111; --link: #2070c0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; transition: background 0.3s, color 0.3s; }
+.theme-toggle { position: fixed; top: 15px; right: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.9em; z-index: 100; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 1.8em; margin: 30px 0 10px; color: var(--h1-color); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+h2 { font-size: 1.4em; margin: 30px 0 15px; color: var(--accent); }
+h3 { font-size: 1.15em; margin: 20px 0 10px; color: var(--h3-color); }
+p { margin: 10px 0; }
+ul, ol { margin: 10px 0 10px 25px; }
+li { margin: 5px 0; }
+code { background: var(--code-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+pre { background: var(--code-bg); padding: 15px; border-radius: 6px; overflow-x: auto; margin: 15px 0; border-left: 3px solid var(--accent); }
+pre code { background: none; padding: 0; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 15px 0; }
+table { width: 100%; border-collapse: collapse; min-width: 500px; }
+th, td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+th { background: var(--card); }
+a { color: var(--link); }
+.toc { background: var(--surface); padding: 20px 25px; border-radius: 8px; margin: 20px 0; }
+.toc a { text-decoration: none; display: block; padding: 4px 0; }
+.toc a:hover { color: var(--accent); }
+.phase { background: var(--surface); border-radius: 8px; padding: 25px; margin: 25px 0; border: 1px solid var(--border); }
+details.section > summary { font-size: 1.4em; color: var(--accent); cursor: pointer; padding: 15px 25px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin: 25px 0 0; list-style: none; }
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before { content: "\25B6  "; font-size: 0.7em; vertical-align: middle; }
+details.section[open] > summary::before { content: "\25BC  "; }
+details.section[open] > summary { border-radius: 8px 8px 0 0; margin-bottom: 0; }
+details.section > .phase { margin-top: 0; border-top: none; border-radius: 0 0 8px 8px; }
+details.section > .phase > h2 { display: none; }
+.warn { background: var(--warn-bg); border-left: 4px solid var(--accent); padding: 12px 15px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+.tip { background: var(--tip-bg); border-left: 4px solid #4CAF50; padding: 12px 15px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+details { margin: 15px 0; }
+details summary { cursor: pointer; padding: 10px 15px; border-radius: 6px; font-weight: bold; }
+details summary:hover { opacity: 0.8; }
+.agent-instructions { background: var(--agent-bg); border: 1px dashed var(--agent-border); border-radius: 6px; margin: 15px 0; }
+.agent-instructions summary { color: var(--agent-summary); background: var(--agent-bg); }
+.agent-instructions .content { padding: 10px 15px 15px; color: var(--agent-text); }
+.agent-instructions pre { border-left-color: #6666aa; }
+.checklist { list-style: none; margin-left: 0; }
+.checklist li { padding: 4px 0; }
+.checklist li::before { content: "\2610 "; }
+.tool-badge { display: inline-block; background: var(--card); padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin: 2px; }
+.copyable { position: relative; cursor: pointer; }
+.copyable::after { content: "click to copy"; position: absolute; top: 8px; right: 12px; font-size: 0.75em; color: var(--muted); opacity: 0.6; pointer-events: none; }
+.copyable.copied::after { content: "copied!"; color: #4CAF50; opacity: 1; }
+.copyable:hover { border-color: var(--accent); }
+/* ── scroll-nav overlay ── */
+.scroll-nav { position: fixed; right: 0; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 0 0 12px; z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.scroll-nav.visible { opacity: 1; pointer-events: auto; }
+.scroll-nav a { display: block; padding: 3px 16px 3px 8px; font-size: 0.7em; color: var(--muted); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; transition: all 0.3s; opacity: 0.3; transform: scale(0.9); transform-origin: right center; }
+.scroll-nav a.active { font-size: 0.85em; color: var(--accent); opacity: 1; transform: scale(1); font-weight: bold; }
+.scroll-nav a.near { opacity: 0.6; transform: scale(0.95); }
+.scroll-nav a:hover { opacity: 1; color: var(--accent); }
+.download-templates { background: var(--accent); color: #fff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1.05em; cursor: pointer; font-weight: bold; }
+.download-templates:hover { opacity: 0.85; }
+@media (max-width: 600px) { .scroll-nav { max-width: 200px; font-size: 0.85em; } }

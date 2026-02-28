@@ -1,0 +1,20 @@
+# Source card template (YAML format, introduced in Phase 4)
+# Copy this structure for each key source
+
+- doi: ""
+  title: ""
+  authors: []
+  year: 0
+  journal: ""
+  type: ""           # primary | secondary | review | meta-analysis
+  relevance: ""      # core | supporting | background | contradicting
+  has_full_text: false
+  key_findings:
+    - ""
+  methodology: ""
+  limitations: ""
+  connection_to_thesis: ""
+  quality_assessment: ""  # high | medium | low
+  notebooklm_verified: false
+  scite_support: 0
+  scite_contrast: 0
