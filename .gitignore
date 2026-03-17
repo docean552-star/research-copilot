@@ -1,0 +1,3 @@
+research-paper-guide.html
+*.txt
+!templates/*.txt

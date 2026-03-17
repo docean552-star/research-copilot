@@ -145,9 +145,9 @@
       priority: P1
       done_when: "notebook created, PDFs uploaded, first questions asked"
       status: pending
-    - title: "Help structure findings into source cards (YAML)"
+    - title: "Help structure findings into source cards (source-cards.txt)"
       priority: P1
-      done_when: "source-cards.yaml created with cards for key sources"
+      done_when: "source cards added to research-library/source-cards.txt for key sources"
       status: pending
     - title: "Help identify contradictions between sources"
       priority: P2
@@ -326,7 +326,7 @@
       status: pending
     - title: "Update memory for future projects"
       priority: P3
-      done_when: "lessons learned saved to ../memory/"
+      done_when: "lessons learned saved to research-library/memory.txt"
       status: pending
   constraints:
     - "Do NOT add content — only edit style"
