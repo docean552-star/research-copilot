@@ -207,7 +207,7 @@
 
 <h3>Шаг 0.3: search-log</h3>
 <p>Агент заполнит <code>search-log.txt</code> (файл создан при настройке проекта). Вот структура для справки:</p>
-<span class="prompt-label target-file">&rarr; шаблон файла (заполняет агент)</span>
+<details class="file-ref"><summary>Структура search-log.txt (для справки)</summary>
 <pre><code>SEARCH LOG
 ==========
 
@@ -229,6 +229,7 @@
 Критерии исключения:
 - Opinion pieces без эмпирических данных
 - Тезисы конференций без полного текста</code></pre>
+</details>
 
 <p><b>ТЫ решаешь</b> какой вопрос исследовать. Claude помогает сформулировать, финальное решение &mdash; твоё.</p>
 
@@ -285,8 +286,8 @@
 
 Помоги разобрать: выдели ключевых авторов, теории,
 мета-анализы. Обнови search-log.txt.</code></pre>
-<p>Агент разберёт отчёт и добавит в search-log.txt секцию по такой структуре:</p>
-<span class="prompt-label target-file">&rarr; шаблон файла (заполняет агент)</span>
+<p>Агент разберёт отчёт и добавит в search-log.txt.</p>
+<details class="file-ref"><summary>Структура секции Фазы 1 в search-log (для справки)</summary>
 <pre><code>ФАЗА 1: РАЗВЕДКА (Deep Research)
 Дата: <span class="placeholder">дата</span>
 
@@ -307,6 +308,7 @@
 Журналы по теме:
 - <span class="placeholder">Journal 1</span>
 - <span class="placeholder">Journal 2</span></code></pre>
+</details>
 
 <div class="phase-result"><b>Фаза 1 из 9 &mdash; готово! У тебя:</b> обработанный отчёт Deep Research, список ключевых авторов и теорий, расширенные поисковые термины в search-log.txt. Хорошее место для нового чата.</div>
 
@@ -369,7 +371,7 @@
 
 <h3>Шаг 2.4: Документируй КАЖДЫЙ поиск</h3>
 <p>Ты ищешь в браузере, а агент помогает логировать. Скидывай ему результаты &mdash; он запишет в search-log.txt по такому формату:</p>
-<span class="prompt-label target-example">&rarr; пример заполнения (замени на свои данные)</span>
+<details class="file-ref"><summary>Пример записи в search-log (для справки)</summary>
 <pre><code>Запрос 1:
 - Дата: 2026-02-27
 - База: Google Scholar
@@ -379,6 +381,7 @@
 - Просмотрено: первые 50 (5 страниц)
 - Сохранено в Zotero: 12
 - Отсеяно: 38 (20 нерелевантных, 10 opinion pieces, 5 не-англ., 3 дубликата)</code></pre>
+</details>
 
 <div class="tip"><b>Это не бюрократия &mdash; это защита от cherry-picking (выборочного цитирования).</b> Когда рецензент спросит "как вы искали литературу?" &mdash; покажешь search-log и он увидит системный подход.</div>
 
@@ -701,8 +704,8 @@ Outline этой секции:
 цитата + проблема + как исправить.</code></pre>
 
 <h3>Шаг 7.3: review-log</h3>
-<p>Агент-рецензент создаст review-log.txt по такой структуре:</p>
-<span class="prompt-label target-example">&rarr; пример заполнения (замени на свои данные)</span>
+<p>Агент-рецензент создаст review-log.txt.</p>
+<details class="file-ref"><summary>Пример review-log (для справки)</summary>
 <pre><code>REVIEW LOG
 ==========
 
@@ -720,6 +723,7 @@ Outline этой секции:
 - Проблема: не упомянуты данные которые противоречат
 - Решение: добавить абзац с контраргументами (counter-evidence)
 - Статус: ИСПРАВЛЕНО / В РАБОТЕ</code></pre>
+</details>
 
 <div class="phase-result"><b>Фаза 7 из 9 &mdash; готово! У тебя:</b> все секции разобраны рецензентом, review-log.txt заполнен, каждое замечание исправлено или обоснованно отклонено. Хорошее место для нового чата.</div>
 
@@ -750,13 +754,15 @@ Outline этой секции:
 Покажи точную цитату.</code></pre>
 
 <p>Записывай в <code>verification-log.txt</code>:</p>
-<span class="prompt-label target-example">&rarr; пример заполнения (замени на свои данные)</span>
+<details class="file-ref">
+<summary>Пример заполнения verification-log.txt (замени на свои данные)</summary>
 <div class="table-wrap"><table>
 <tr><th>Claim в тексте</th><th>Источник</th><th>Подтверждено?</th><th>Цитата</th><th>Статус</th></tr>
 <tr><td>LLM снижают critical thinking на 15%</td><td>Smith 2024</td><td>ДА</td><td>"We observed a 15.2% decrease..." p.7</td><td>CONFIRMED</td></tr>
 <tr><td>Студенты предпочитают AI-фидбек</td><td>Jones 2023</td><td>ЧАСТИЧНО</td><td>"mixed results"</td><td>NEEDS HEDGING</td></tr>
 <tr><td>AI увеличивает продуктивность в 3 раза</td><td>Lee 2022</td><td>НЕТ</td><td>Нет такого утверждения</td><td>REMOVE</td></tr>
 </table></div>
+</details>
 
 <p><b>Статусы:</b></p>
 <ul>
@@ -781,7 +787,8 @@ Outline этой секции:
 
 <h3>Шаг 8.3: Метрики качества</h3>
 <p>Тебе не нужно считать это самому. Скажи агенту: &laquo;Посчитай метрики качества на основе verification-log.txt&raquo; &mdash; он заполнит таблицу в <code>quality-metrics.txt</code>. Вот что он считает (для справки):</p>
-<span class="prompt-label target-file">&rarr; шаблон таблицы (заполняет агент)</span>
+<details class="file-ref">
+<summary>Шаблон quality-metrics.txt (заполняет агент)</summary>
 <div class="table-wrap"><table>
 <tr><th>Метрика</th><th>Формула</th><th>Цель</th><th>Факт</th><th>Статус</th></tr>
 <tr><td>Coverage (покрытие)</td><td>Темы с 3+ источниками / всего тем</td><td>&gt;80%</td><td></td><td></td></tr>
@@ -792,6 +799,7 @@ Outline этой секции:
 <tr><td>Source diversity (разнообразие)</td><td>Уникальных журналов / всего</td><td>&gt;30%</td><td></td><td></td></tr>
 <tr><td>Falsifiability (опровержимость)</td><td>Утверждения с критерием опровержимости / всего</td><td>&gt;70%</td><td></td><td></td></tr>
 </table></div>
+</details>
 
 <div class="phase-result"><b>Фаза 8 из 9 &mdash; готово! Осталась одна! У тебя:</b> verification-log.txt заполнен (все утверждения проверены: CONFIRMED / NEEDS HEDGING / REMOVE), ключевые источники проверены в scite.ai, quality-metrics.txt посчитан. Хорошее место для нового чата.</div>
 
@@ -875,7 +883,8 @@ Outline этой секции:
 <summary>Файловая структура проекта</summary>
 <div class="phase">
 <p>При первом запуске агент создаст две папки:</p>
-<span class="prompt-label target-file">&rarr; справка (создаётся автоматически)</span>
+<details class="file-ref" open>
+<summary>Структура проекта (создаётся автоматически)</summary>
 <pre><code>Рабочий стол/
   research-library/             -- общее между проектами (создаётся один раз)
     source-cards.txt            -- карточки всех источников
@@ -893,6 +902,7 @@ Outline этой секции:
     review-log.txt              -- замечания критика (фаза 7)
     verification-log.txt        -- claim: источник: вердикт (фаза 8)
     quality-metrics.txt         -- метрики покрытия и достоверности (фаза 8)</code></pre>
+</details>
 <p>Для каждой новой статьи &mdash; отдельная папка на рабочем столе. Попроси агента создать новый проект. Папка <code>research-library/</code> общая &mdash; источники и опыт переносятся между статьями автоматически.</p>
 
 <h3>Кто создаёт и заполняет файлы</h3>
